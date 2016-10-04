@@ -1,0 +1,27 @@
+{
+  "name": "weathers",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sendicott/weathers.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sendicott/weathers/issues"
+  },
+  "homepage": "https://github.com/sendicott/weathers#readme",
+  "dependencies": {
+    "foundation": "^4.2.1-1",
+    "foundation-grid": "^0.1.0",
+    "foundation-sites": "^6.2.3",
+    "gulp": "^3.9.1",
+    "gulp-browserify": "^0.5.1",
+    "gulp-sass": "^2.3.2"
+  }
+}
