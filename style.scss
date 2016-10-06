@@ -1,0 +1,67 @@
+@import 'node_modules/foundation-sites/scss/foundation';
+
+@include foundation-global-styles;
+@include foundation-grid;
+
+body {
+    @include grid-row(12);
+
+    main {
+        @include grid-column(12);
+        background-color: lightgray;
+        height: 500px;
+    }
+
+    footer {
+        @include grid-column(12);
+        background-color: black;
+        min-height: 50px;
+        display: inline-flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        align-items: center;
+
+        a {
+            text-decoration: none;
+            color: white;
+            font-weight: 800;
+            font-size: 24px;
+
+            &:hover {
+                color: yellow;
+            }
+        }
+    }
+}
+
+#inputNugget {
+    text-align: center;
+
+    button {
+        display: block;
+        margin: 40px auto;
+        padding: 10px 25px;
+        background-color: black;
+        color: white;
+        font-weight: 800;
+        font-size: 24px;
+        border-radius: 20px;
+
+        &:hover {
+            color: yellow;
+        }
+    }
+
+    input {
+        max-width: 500px;
+        text-align: center;
+    }
+}
+
+#summaryNugget {
+    text-align: center;
+}
+
+#directionsNugget {
+    text-align: center;
+}
