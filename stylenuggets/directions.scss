@@ -1,18 +1,25 @@
 #directionsNugget {
     text-align: center;
+    color: $regulartext-color;
+
+    h1 {
+        color: $bkgndandbttn-color;
+    }
 
     .directionBox {
         text-align: center;
-        border: solid 1px black;
+        border: solid 1px $regulartext-color;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        margin-bottom: 10px;
+        background-color: $block-color;
 
         .boxChunk {
             width: 33%;
 
             .wi {
-                color: blue;
+                color: $weather-color;
                 font-size: 3em;
                 padding-bottom: 20px;
             }

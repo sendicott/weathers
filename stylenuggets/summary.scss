@@ -1,20 +1,24 @@
-$weatherbox-width: 33%;
-$weatherbox-display: inline-block;
-
 #summaryNugget {
     text-align: center;
+    color: $regulartext-color;
+
+    h1 {
+        color: $bkgndandbttn-color;
+    }
     
     .wi {
-        color: blue;
+        color: $weather-color;
         font-size: 3em;
         height: 100%;
     }
 
     .summaryBox {
-        border: solid 1px black;
+        border: solid 1px $regulartext-color;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        background-color: $block-color;
+        margin-bottom: 10px;
 
         .boxPart {
             width: $weatherbox-width;

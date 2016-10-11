@@ -1,23 +1,44 @@
 #inputNugget {
     text-align: center;
+    color: $bkgndandbttn-color;
 
     button {
         display: block;
         margin: 40px auto;
         padding: 10px 25px;
-        background-color: black;
-        color: white;
+        background-color: $regulartext-color;
         font-weight: 800;
         font-size: 24px;
         border-radius: 20px;
 
         &:hover {
-            color: yellow;
+            color: $outerbkgnd-color;
         }
     }
 
     input {
         width: 350px;
         text-align: center;
+        color: $regulartext-color;
+        background-color: $block-color;
+        border: $block-color;
+
+        ::-webkit-input-placeholder {
+            color: $outerbkgnd-color;
+        }
+
+        :-moz-placeholder {
+            color: $outerbkgnd-color;
+            opacity:  1;
+        }
+
+        ::-moz-placeholder {
+            color: $outerbkgnd-color;
+            opacity:  1;
+        }
+
+        :-ms-input-placeholder {
+            color: $outerbkgnd-color;
+        }
     }
 }
