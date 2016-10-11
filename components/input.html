@@ -1,12 +1,11 @@
 <section id="inputNugget">
     <h1>Input</h1>
-    <!--<h1>{{ test }}</h1>-->
     <h2>Starting Location</h2>
-    <input ng-model="start" type="text" placeholder="Where are you now?">
+    <input ng-model="start" type="text" placeholder="123 Street Name, City, State Zip">
     <h2>Ending Location</h2>
-    <input type="text" placeholder="Where are you going?">
+    <input ng-model="end" type="text" placeholder="123 Street Name, City, State Zip">
     <h2>Time of Departure</h2>
-    <input type="text" placeholder="When are you leaving?">
+    <input ng-model="time" type="text" placeholder="yyyy-mm-dd hh:mm">
 
-    <button ng-click="setInputValues(start)">GO!</button>  
+    <button ng-click="setInputValues(start, end, time)">GO!</button>  
 </section>

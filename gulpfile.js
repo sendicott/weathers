@@ -27,4 +27,5 @@ gulp.task('watch', function () {
     gulp.watch('components/*.html', ['html']);
     gulp.watch('app.js', ['js']);
     gulp.watch('*.scss', ['css']);
+    gulp.watch('stylenuggets/*.scss', ['css']);
 });

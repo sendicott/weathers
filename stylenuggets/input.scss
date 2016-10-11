@@ -1,0 +1,23 @@
+#inputNugget {
+    text-align: center;
+
+    button {
+        display: block;
+        margin: 40px auto;
+        padding: 10px 25px;
+        background-color: black;
+        color: white;
+        font-weight: 800;
+        font-size: 24px;
+        border-radius: 20px;
+
+        &:hover {
+            color: yellow;
+        }
+    }
+
+    input {
+        width: 350px;
+        text-align: center;
+    }
+}

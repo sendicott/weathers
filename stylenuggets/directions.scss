@@ -1,0 +1,25 @@
+#directionsNugget {
+    text-align: center;
+
+    .directionBox {
+        text-align: center;
+        border: solid 1px black;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .boxChunk {
+            width: 33%;
+
+            .wi {
+                color: blue;
+                font-size: 3em;
+                padding-bottom: 20px;
+            }
+
+            .material-icons {
+                font-size: 3em;
+            }
+        }
+    }
+}

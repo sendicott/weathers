@@ -1,3 +1,28 @@
 <section id="directionsNugget">
-    <h1>{{ test }}</h1>
+    <h1>Directions</h1>
+    <div class="directionBox" ng-repeat="direction in directionsArray">
+        <div class="boxChunk">
+            <i class="material-icons">{{ direction.navicon }}</i>
+            <h2>{{ direction.distance }} {{ direction.distanceUnit }}</h2>
+        </div>
+        <div class="boxChunk">
+            <p>{{ direction.description }}</p>
+        </div>
+        <div class="boxChunk">
+            <h2>{{ direction.weather }}</h2>
+            <i class="{{ direction.weathicon }}">  {{ direction.temp }}°F</i>
+        </div>
+    </div>
 </section>
+
+
+<!--
+navicon √
+description √
+distance √
+distanceUnit √
+temp √
+weather √
+weathicon √
+-->
+    

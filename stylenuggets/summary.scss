@@ -1,0 +1,24 @@
+$weatherbox-width: 33%;
+$weatherbox-display: inline-block;
+
+#summaryNugget {
+    text-align: center;
+    
+    .wi {
+        color: blue;
+        font-size: 3em;
+        height: 100%;
+    }
+
+    .summaryBox {
+        border: solid 1px black;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .boxPart {
+            width: $weatherbox-width;
+            display: $weatherbox-display;
+        }
+    }
+}

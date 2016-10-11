@@ -1,3 +1,16 @@
 <section id="summaryNugget">
-    <h1>{{ test }}</h1>
+    <h1>Summary</h1>
+    <div class="summaryBox" ng-repeat="summary in summaryArray">
+        <div class="boxPart">
+            <h2>{{ summary.street }}</h2>
+            <h2>{{ summary.time }}</h2>            
+        </div>
+        <div class="boxPart">
+            <h2>{{ summary.weather }}</h2>
+            <h2>{{ summary.temp }} degrees Fahrenheit</h2>  
+        </div>
+        <div class="boxPart">
+            <i class="{{ summary.icon }}"></i>
+        </div>
+    </div>
 </section>
