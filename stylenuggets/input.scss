@@ -31,7 +31,7 @@
  
     button {
         display: block;
-        margin: 40px auto;
+        margin: 40px auto 0px auto;
         padding: 10px 25px;
         background-color: $regulartext-color;
         font-weight: 800;
@@ -42,4 +42,18 @@
             color: $outerbkgnd-color;
         }
     }
+
+    // #darksky {
+    //     text-align: right;
+
+    //     a {
+    //         text-decoration: none;
+    //         color: white;
+    //         font-size: 12px;
+
+    //         &:hover {
+    //             color: $regulartext-color;
+    //         }
+    //     }
+    // }
 }

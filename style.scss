@@ -21,8 +21,22 @@ body {
     main {
         @include grid-column(12);
         background-color: $outerbkgnd-color;
-        height: 550px;
+        height: 560px;
         overflow-y: scroll;
+
+        #darksky {
+            text-align: right;
+
+            a {
+                text-decoration: none;
+                color: white;
+                font-size: 12px;
+
+                &:hover {
+                    color: $regulartext-color;
+                }
+            }
+        }
     }
 
     footer {
@@ -47,9 +61,5 @@ body {
                 }
             }            
         }
-        
-        // #darksky {
-        //     display: block;
-        // }
     }
 }

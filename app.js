@@ -68,8 +68,6 @@ app.controller("InputController", function($scope, WeatherService, $state) {
         }
         let time = new Date(year, month, day, hour, minute).getTime() / 1000;
         WeatherService.setTime(time);
-        let controllerInfo = WeatherService.getData();
-        console.log("Controller Info: " + controllerInfo);
         $state.go("summary");
     };
 });
@@ -83,7 +81,6 @@ app.component("summary", {
 
 app.controller("SummaryController", function($scope, WeatherService) {
     $scope.summaryArray = WeatherService.getSummaryData();
-    // console.log(summaryArray);
 });
 // ------------Summary Page------------
 
@@ -104,11 +101,6 @@ app.factory("WeatherService", function($http) {
         end: null,
         time: null,
     };
-
-    let apiData = null;
-
-// https://whispering-cliffs-96344.herokuapp.com/?startLocation=Charlotte,%20NC&endLocation=Denver,%20CO&startTime=1476339932
-
     
     let summaryTesting = [
         {
@@ -138,7 +130,7 @@ app.factory("WeatherService", function($http) {
             weather: "Thunderstorm",
             temp: 64,
             icon: "wi-wu-tstorms",
-        }
+        },
     ];
 
     let directionTesting = [
@@ -197,20 +189,40 @@ app.factory("WeatherService", function($http) {
             return input;
         },
 
-        getData: function() {
+        getSummaryData: function() {
+            // originally had only dataArray, tried to splice it
+            // when the weather conditions matched
+            // -- nothing was ever removed
+            let dataArray = [];
+            // now I have a second empty array, where I am trying to push
+            // the current index of dataArray when it doesn't match the 
+            // weather condition that came before it
+            // -- returning an error because there are duplicates in my repeater
+            let returnedArray = [];
+
             $http({
                 method: 'GET',
                 url: "https://whispering-cliffs-96344.herokuapp.com/?startLocation=" + input.start + "&endLocation=" + input.end + "&startTime=" + input.time
             }).then(function(response) {
-                angular.copy(response.data, apiData);
-                console.log("pure data: " + response.data);
-                console.log("Variable in Service: " + apiData);
+                angular.copy(response.data, dataArray);
+                returnedArray.push(dataArray[0]);
+                for (let i = 1; i < dataArray.length; i++) {
+                    if (dataArray[i].weather.currently.summary !== dataArray[i-1].weather.currently.summary) {
+                        // dataArray.splice(i, 1);
+                        // console.log(dataArray[i]);
+                        returnedArray.push(dataArray[i]);
+                    }
+                };
+                for (let j = 0; j < dataArray.length; j++) {
+                    console.log(dataArray[j].weather.currently.summary);
+                }
             }, function (response) {
             console.log("Failed");
             });
+            return returnedArray;
         },
 
-        getSummaryData: function() {
+        getDirectionsData: function() {
             return summaryTesting;
         },
 

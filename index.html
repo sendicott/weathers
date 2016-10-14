@@ -34,6 +34,9 @@
 <body ng-app="WeathersApp">
     <main>
         <ui-view></ui-view>
+        <div id="darksky">
+            <a href="https://darksky.net/" target="_blank">Powered by Dark Sky</a>
+        </div>
     </main>
     <footer>
         <div id="pageButtons">
@@ -41,10 +44,39 @@
             <a ui-sref="summary">Summary</a>
             <a ui-sref="directions">Directions</a>            
         </div>
-        <!--<div id="darksky">
-            <a href="https://darksky.net/">Powered by Dark Sky</a>
-        </div>-->
     </footer>
 </body>
 
 </html>
+
+
+   <!--{
+    "step": {
+      "distance": {
+        "text": "482 ft",
+        "value": "147"
+      },
+      "duration": {
+        "text": "1 min",
+        "value": "42"
+      },
+      "start": {
+        "lat": 35.2271331,
+        "lng": -80.84317519999999
+      },
+      "end": {
+        "lat": 35.227995,
+        "lng": -80.84194500000001
+      }
+    },
+    "weather": {
+      "latitude": "35.2271331",
+      "longitude": "-80.84317519999999",
+      "currently": {
+        "icon": "partly-cloudy-night",
+        "summary": "Partly Cloudy",
+        "temperature": 74
+      }
+    },
+    "epochTime": 1596339932
+  },-->
