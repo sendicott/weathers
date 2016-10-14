@@ -36,12 +36,14 @@
         <ui-view></ui-view>
     </main>
     <footer>
-        <a ui-sref="inputter">Input</a>
-        <a ui-sref="summary">Summary</a>
-        <a ui-sref="directions">Directions</a>
-        <!--<a ng-click="tabClickable()">Input</a>
-        <a ng-click="tabClickable()">Summary</a>
-        <a ng-click="tabClickable()">Directions</a>-->
+        <div id="pageButtons">
+            <a ui-sref="inputter">Input</a>
+            <a ui-sref="summary">Summary</a>
+            <a ui-sref="directions">Directions</a>            
+        </div>
+        <!--<div id="darksky">
+            <a href="https://darksky.net/">Powered by Dark Sky</a>
+        </div>-->
     </footer>
 </body>
 

@@ -2,6 +2,33 @@
     text-align: center;
     color: $bkgndandbttn-color;
 
+    input {
+        width: 350px;
+        text-align: center;
+        color: $regulartext-color;
+        background-color: $block-color;
+        border: $block-color;
+    }
+
+    #scheduleBox {
+        display: block;
+
+        div {
+            display: inline-block;
+            width: 45%;
+            vertical-align: top;
+
+            select {
+                display: block;
+                margin: 10px auto;
+                background-color: $block-color;
+                color: $regulartext-color;
+                width: 350px;
+            }     
+        }
+
+    }
+ 
     button {
         display: block;
         margin: 40px auto;
@@ -12,32 +39,6 @@
         border-radius: 20px;
 
         &:hover {
-            color: $outerbkgnd-color;
-        }
-    }
-
-    input {
-        width: 350px;
-        text-align: center;
-        color: $regulartext-color;
-        background-color: $block-color;
-        border: $block-color;
-
-        ::-webkit-input-placeholder {
-            color: $outerbkgnd-color;
-        }
-
-        :-moz-placeholder {
-            color: $outerbkgnd-color;
-            opacity:  1;
-        }
-
-        ::-moz-placeholder {
-            color: $outerbkgnd-color;
-            opacity:  1;
-        }
-
-        :-ms-input-placeholder {
             color: $outerbkgnd-color;
         }
     }

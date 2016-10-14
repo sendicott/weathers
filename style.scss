@@ -15,36 +15,41 @@ $weatherbox-display: inline-block;
 @import 'stylenuggets/summary';
 @import 'stylenuggets/directions';
 
-// @import 'stylenuggets/*';
-
 body {
     @include grid-row(12);
 
     main {
         @include grid-column(12);
         background-color: $outerbkgnd-color;
-        height: 500px;
+        height: 550px;
         overflow-y: scroll;
     }
 
     footer {
-        @include grid-column(12);
-        background-color: $regulartext-color;
-        min-height: 50px;
-        display: inline-flex;
-        justify-content: space-around;
-        flex-wrap: wrap;
-        align-items: center;
 
-        a {
-            text-decoration: none;
-            color: $bkgndandbttn-color;
-            font-weight: 800;
-            font-size: 24px;
+        #pageButtons {
+            @include grid-column(12);
+            background-color: $regulartext-color;
+            min-height: 50px;
+            display: inline-flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            align-items: center;
 
-            &:hover {
-                color: $outerbkgnd-color;
-            }
+            a {
+                text-decoration: none;
+                color: $bkgndandbttn-color;
+                font-weight: 800;
+                font-size: 24px;
+
+                &:hover {
+                    color: $outerbkgnd-color;
+                }
+            }            
         }
+        
+        // #darksky {
+        //     display: block;
+        // }
     }
 }

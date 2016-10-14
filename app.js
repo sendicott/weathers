@@ -29,14 +29,48 @@ app.component("inputter", {
 });
 
 app.controller("InputController", function($scope, WeatherService, $state) {
-    $scope.start = "";
-    $scope.setInputValues = function(start, end, time) {
+    $scope.start = 'Charlotte, NC'; // just for testing
+    $scope.end = 'Denver, CO'; // just for testing
+
+    $scope.months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    
+    let dayArray = [];
+    for (let i = 1; i <= 31; i++) {
+        dayArray.push(i);
+    }
+    $scope.days = dayArray;
+    $scope.years = [moment().format('YYYY'), String(parseInt(moment().format('YYYY')) + 1)];
+
+    let hourArray = [];
+    for (let i = 1; i <= 24; i++) {
+        hourArray.push(i);
+    }
+    $scope.hours = hourArray;
+
+    let minuteArray = [];
+    for (let i = 0; i <= 45; i = i + 15) {
+        if (i === 0) {
+            minuteArray.push("00");
+        } else {
+            minuteArray.push(i);
+        }
+    }
+    $scope.minutes = minuteArray;
+
+    $scope.setInputValues = function(start, end, month, day, year, hour, minute) {
         WeatherService.setStart(start);
         WeatherService.setEnd(end);
+        let monthIndex = "";
+        for (let i = 0; i <= 12; i++) {
+            if (month === $scope.months[i]) {
+                month = i;
+            }
+        }
+        let time = new Date(year, month, day, hour, minute).getTime() / 1000;
         WeatherService.setTime(time);
+        let controllerInfo = WeatherService.getData();
+        console.log("Controller Info: " + controllerInfo);
         $state.go("summary");
-        // console.log(WeatherService.getInput());
-        // console.log(WeatherService.getURL());
     };
 });
 // ------------Input Page------------
@@ -61,58 +95,49 @@ app.component("directions", {
 
 app.controller("DirectionsController", function($scope, WeatherService) {
     $scope.directionsArray = WeatherService.getDirectionData();
-    // $scope.test = "Directions";
 });
 // ------------Directions Page------------
 
 app.factory("WeatherService", function($http) {
-
     let input = {
         start: null,
         end: null,
         time: null,
     };
 
-    let testing = null;
+    let apiData = null;
 
-    // $http({
-    //     method: 'GET',
-    //     url: "https://polar-meadow-84741.herokuapp.com/directions/?startLocation=" + input.start + "&endLocation=" + input.end + "&startTime=" + input.time
-    // }).then(function(response) {
-    //     angular.copy(response.data, testing);
-    //     console.log(testing);
-    // }, function (response) {
-    // console.log("Failed");
-    // });
- 
+// https://whispering-cliffs-96344.herokuapp.com/?startLocation=Charlotte,%20NC&endLocation=Denver,%20CO&startTime=1476339932
+
+    
     let summaryTesting = [
         {
             street: "95W",
             time: "12:00PM",
             weather: "Heavy Rain",
             temp: 74,
-            icon: "wi wi-wu-rain",
+            icon: "wi-wu-rain",
         },
         {
             street: "85N",
             time: "4:00PM",
             weather: "Clear Skies",
             temp: 79,
-            icon: "wi wi-wu-clear",
+            icon: "wi-wu-clear",
         },
         {
             street: "Interstate-77",
             time: "9:00PM",
             weather: "Blizzard",
             temp: 12,
-            icon: "wi wi-wu-snow",
+            icon: "wi-wu-snow",
         },
         {
             street: "Shore Road",
             time: "4:00AM",
             weather: "Thunderstorm",
             temp: 64,
-            icon: "wi wi-wu-tstorms",
+            icon: "wi-wu-tstorms",
         }
     ];
 
@@ -164,18 +189,25 @@ app.factory("WeatherService", function($http) {
             input.end = secondInput;
         },
 
-        setTime: function(thirdInput) {
-            thirdInput = moment(thirdInput).format();
-            console.log(thirdInput);
-            input.time = thirdInput;
+        setTime: function(dateandtime) {
+            input.time = dateandtime;
         },
 
         getInput: function() {
             return input;
         },
 
-        getURL: function() {
-            return "https://polar-meadow-84741.herokuapp.com/directions/?startLocation=" + input.start + "&endLocation=" + input.end + "&startTime=" + input.time;
+        getData: function() {
+            $http({
+                method: 'GET',
+                url: "https://whispering-cliffs-96344.herokuapp.com/?startLocation=" + input.start + "&endLocation=" + input.end + "&startTime=" + input.time
+            }).then(function(response) {
+                angular.copy(response.data, apiData);
+                console.log("pure data: " + response.data);
+                console.log("Variable in Service: " + apiData);
+            }, function (response) {
+            console.log("Failed");
+            });
         },
 
         getSummaryData: function() {

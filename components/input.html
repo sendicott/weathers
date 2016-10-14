@@ -4,8 +4,34 @@
     <input ng-model="start" type="text" placeholder="123 Street Name, City, State Zip">
     <h2>Ending Location</h2>
     <input ng-model="end" type="text" placeholder="123 Street Name, City, State Zip">
-    <h2>Time of Departure</h2>
-    <input ng-model="time" type="datetime" placeholder="yyyy-mm-dd hh:mm">
 
-    <button ng-click="setInputValues(start, end, time)">GO!</button>  
+    <div id="scheduleBox">
+        <div>
+            <h2>Date of Departure</h2>
+            <select ng-model="monthSelected">
+                <option ng-repeat="month in months">{{ month }}</option>
+            </select>
+                
+            <select ng-model="daySelected">
+                <option ng-repeat="day in days" value="{{ day }}">{{ day }}</option>
+            </select>
+
+            <select ng-model="yearSelected">
+                <option ng-repeat="year in years" value="{{ year }}">{{ year }}</option>
+            </select>
+        </div>
+        <div>
+            <h2>Time of Departure</h2>
+            <select ng-model="hourSelected">
+                <option ng-repeat="hour in hours" value="{{ hour }}">{{ hour }}</option>
+            </select>
+
+            <select ng-model="minuteSelected">
+                <option ng-repeat="minute in minutes" value="{{ minute }}">{{ minute }}</option>
+            </select>
+        </div>
+    </div>
+
+    <button ng-click="setInputValues(start, end, monthSelected, daySelected, yearSelected, hourSelected, minuteSelected)">GO!</button>   
+
 </section>
