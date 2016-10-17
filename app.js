@@ -28,12 +28,12 @@ app.component("inputter", {
     controller: "InputController",
 });
 
-app.controller("InputController", function($scope, WeatherService, $state) {
+app.controller("InputController", function ($scope, WeatherService, $state) {
     $scope.start = 'Charlotte, NC'; // just for testing
-    $scope.end = 'Denver, CO'; // just for testing
+    $scope.end = 'San Francisco, CA'; // just for testing
 
     $scope.months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    
+
     let dayArray = [];
     for (let i = 1; i <= 31; i++) {
         dayArray.push(i);
@@ -57,7 +57,7 @@ app.controller("InputController", function($scope, WeatherService, $state) {
     }
     $scope.minutes = minuteArray;
 
-    $scope.setInputValues = function(start, end, month, day, year, hour, minute) {
+    $scope.setInputValues = function (start, end, month, day, year, hour, minute) {
         WeatherService.setStart(start);
         WeatherService.setEnd(end);
         let monthIndex = "";
@@ -79,8 +79,20 @@ app.component("summary", {
     controller: "SummaryController",
 });
 
-app.controller("SummaryController", function($scope, WeatherService) {
-    $scope.summaryArray = WeatherService.getSummaryData();
+app.controller("SummaryController", function ($scope, WeatherService) {
+    // trying to change epoch time to regular time, but it's 
+    // still returning epoch time
+
+    // $scope.summaryArray = WeatherService.getSummaryData();
+    let summaryArray = WeatherService.getSummaryData();
+    let geoLocale = [];
+    for (let i = 0; i < summaryArray.length; i++) {
+        summaryArray[i].epochTime = moment(summaryArray[i].epochTime).format('YYYY');
+        // console.log("testing");
+    }
+
+
+    $scope.summaryArray = summaryArray;
 });
 // ------------Summary Page------------
 
@@ -90,18 +102,18 @@ app.component("directions", {
     controller: "DirectionsController",
 });
 
-app.controller("DirectionsController", function($scope, WeatherService) {
+app.controller("DirectionsController", function ($scope, WeatherService) {
     $scope.directionsArray = WeatherService.getDirectionData();
 });
 // ------------Directions Page------------
 
-app.factory("WeatherService", function($http) {
+app.factory("WeatherService", function ($http) {
     let input = {
         start: null,
         end: null,
         time: null,
     };
-    
+
     let summaryTesting = [
         {
             street: "95W",
@@ -143,7 +155,7 @@ app.factory("WeatherService", function($http) {
             weather: "Thunderstorms",
             weathicon: "wi wi-wu-tstorms",
         },
-               {
+        {
             navicon: "arrow_forward",
             description: "Turn right onto the Interstate 277 Outer N ramp",
             distance: 0.2,
@@ -152,7 +164,7 @@ app.factory("WeatherService", function($http) {
             weather: "Thunderstorms",
             weathicon: "wi wi-wu-tstorms",
         },
-               {
+        {
             navicon: "arrow_upward",
             description: "Keep straight at the fork to continue on US-74 E, follow signs for NC-27 E/Independence Expy",
             distance: 76,
@@ -161,7 +173,7 @@ app.factory("WeatherService", function($http) {
             weather: "Rain",
             weathicon: "wi wi-wu-rain",
         },
-               {
+        {
             navicon: "arrow_back",
             description: "Use the left 2 lands to turn left onto US-11 S/US Hwy 220 N (signs for US-220 N)",
             distance: 0.1,
@@ -173,60 +185,74 @@ app.factory("WeatherService", function($http) {
     ]
 
     return {
-        setStart: function(firstInput) {
+        setStart: function (firstInput) {
             input.start = firstInput;
         },
 
-        setEnd: function(secondInput) {
+        setEnd: function (secondInput) {
             input.end = secondInput;
         },
 
-        setTime: function(dateandtime) {
+        setTime: function (dateandtime) {
             input.time = dateandtime;
         },
 
-        getInput: function() {
+        getInput: function () {
             return input;
         },
 
-        getSummaryData: function() {
-            // originally had only dataArray, tried to splice it
-            // when the weather conditions matched
-            // -- nothing was ever removed
+        getSummaryData: function () {
             let dataArray = [];
-            // now I have a second empty array, where I am trying to push
-            // the current index of dataArray when it doesn't match the 
-            // weather condition that came before it
-            // -- returning an error because there are duplicates in my repeater
             let returnedArray = [];
 
             $http({
                 method: 'GET',
                 url: "https://whispering-cliffs-96344.herokuapp.com/?startLocation=" + input.start + "&endLocation=" + input.end + "&startTime=" + input.time
-            }).then(function(response) {
+            }).then(function (response) {
                 angular.copy(response.data, dataArray);
                 returnedArray.push(dataArray[0]);
                 for (let i = 1; i < dataArray.length; i++) {
-                    if (dataArray[i].weather.currently.summary !== dataArray[i-1].weather.currently.summary) {
-                        // dataArray.splice(i, 1);
-                        // console.log(dataArray[i]);
+                    if (dataArray[i].weathers[0].currently.summary !== dataArray[i - 1].weathers[0].currently.summary) {
                         returnedArray.push(dataArray[i]);
                     }
                 };
-                for (let j = 0; j < dataArray.length; j++) {
-                    console.log(dataArray[j].weather.currently.summary);
+                for (let j = 0; j < returnedArray.length; j++) {
+                    returnedArray[j].displayTime = moment.unix(returnedArray[j].epochTime).format('MMMM Do, h:mm a');
                 }
+
+                // Get the location name for latlongs
+                for (let j = 0; j < returnedArray.length; j++) {
+                    $http({
+                        method: 'GET',
+                        url: "http://maps.googleapis.com/maps/api/geocode/json?latlng=" + returnedArray[j].weathers[0].latitude + "," + returnedArray[j].weathers[0].longitude + "&sensor=true"
+                    }).then(function (response) {
+                        if (response.data.results !== undefined) {
+                            let result = response.data.results[0];
+                            for (let k = 0; k < result.address_components.length; k++) {
+                                if (result.address_components[k].types.indexOf("locality") !== -1) {
+                                    returnedArray[j].displayCity = result.address_components[k].long_name;
+                                }
+                                if (result.address_components[k].types.indexOf("administrative_area_level_1") !== -1) {
+                                    returnedArray[j].displayState = result.address_components[k].long_name;
+                                }
+                            }
+                        } else {
+                            returnedArray[j].displayCity = "No address found";
+                        }
+                    });
+                }
+
             }, function (response) {
-            console.log("Failed");
+                console.log("Failed");
             });
             return returnedArray;
         },
 
-        getDirectionsData: function() {
+        getDirectionsData: function () {
             return summaryTesting;
         },
 
-        getDirectionData: function() {
+        getDirectionData: function () {
             return directionTesting;
         },
     };
