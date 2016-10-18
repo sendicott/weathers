@@ -3,14 +3,16 @@
     <div class="summaryBox" ng-repeat="summary in summaryArray">
         <div class="boxPart">
             <h2>{{ summary.displayTime }}</h2>
-            <h2>{{ summary.weathers[0].currently.temperature }}° Fahrenheit</h2>
         </div>
         <div class="boxPart">
             <h2>{{ summary.displayCity }}, {{ summary.displayState }}</h2>
         </div>
         <div class="boxPart">
             <h2>{{ summary.weathers[0].currently.summary }}</h2>
-            <i class="wi {{ summary.weathers[0].currently.icon }}"></i>
+            <i class="wi {{ summary.weathers[0].currently.icon }}">  {{ summary.weathers[0].currently.temperature }}° F</i>
         </div>
+    </div>
+    <div id="directionClicker">
+        <button ng-click="seeDirections()">See Directions</button>
     </div>
 </section>

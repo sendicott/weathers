@@ -10,6 +10,7 @@ $block-color: #CCC5B9;
 $weather-color: #006E90;
 $weatherbox-width: 33%;
 $weatherbox-display: inline-block;
+$hover-color: yellow;
 
 @import 'stylenuggets/input';
 @import 'stylenuggets/summary';
@@ -33,7 +34,7 @@ body {
                 font-size: 12px;
 
                 &:hover {
-                    color: $regulartext-color;
+                    color: $hover-color;
                 }
             }
         }
@@ -57,7 +58,7 @@ body {
                 font-size: 24px;
 
                 &:hover {
-                    color: $outerbkgnd-color;
+                    color: $hover-color;
                 }
             }            
         }

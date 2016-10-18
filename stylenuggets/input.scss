@@ -39,21 +39,7 @@
         border-radius: 20px;
 
         &:hover {
-            color: $outerbkgnd-color;
+            color: $hover-color;
         }
     }
-
-    // #darksky {
-    //     text-align: right;
-
-    //     a {
-    //         text-decoration: none;
-    //         color: white;
-    //         font-size: 12px;
-
-    //         &:hover {
-    //             color: $regulartext-color;
-    //         }
-    //     }
-    // }
 }

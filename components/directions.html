@@ -2,27 +2,53 @@
     <h1>Directions</h1>
     <div class="directionBox" ng-repeat="direction in directionsArray">
         <div class="boxChunk">
-            <i class="material-icons">{{ direction.navicon }}</i>
-            <h2>{{ direction.distance }} {{ direction.distanceUnit }}</h2>
+            <h2>{{ direction.displayTime }}</h2>
+            <!--<p>Length: {{ direction.step.duration.text }}</p>-->
+            <h2>Length: {{ direction.step.duration.text }}/{{ direction.step.distance.text }}</h2>
         </div>
         <div class="boxChunk">
-            <p>{{ direction.description }}</p>
+            <p>{{ direction.step.html_instructions }}</p>
+            <h2>Maneuver: {{ direction.step.maneuver }}</h2>
+            <i class="material-icons">{{ direction.step.maneuver }}</i>
         </div>
         <div class="boxChunk">
-            <h2>{{ direction.weather }}</h2>
-            <i class="{{ direction.weathicon }}">  {{ direction.temp }}°F</i>
+            <p>{{ direction.weathers[0].currently.summary }}</p>
+            <i class="wi {{ direction.weathers[0].currently.icon }}">  {{ direction.weathers[0].currently.temperature }}°F</i>
         </div>
     </div>
 </section>
 
-
-<!--
-navicon √
-description √
-distance √
-distanceUnit √
-temp √
-weather √
-weathicon √
--->
-    
+  <!--{
+    "step": {
+      "distance": {
+        "text": "482 ft",
+        "value": "147"
+      },
+      "duration": {
+        "text": "1 min",
+        "value": "42"
+      },
+      "start": {
+        "lat": 35.2271331,
+        "lng": -80.84317519999999
+      },
+      "end": {
+        "lat": 35.227995,
+        "lng": -80.84194500000001
+      },
+      "maneuver": null,
+      "html_instructions": "Head <b>northeast</b> on <b>S Tryon St</b> toward <b>W Trade St</b>"
+    },
+    "weathers": [
+      {
+        "latitude": "35.2271331",
+        "longitude": "-80.84317519999999",
+        "currently": {
+          "icon": "wi-night-alt-cloudy",
+          "summary": "Partly Cloudy",
+          "temperature": 74
+        }
+      }
+    ],
+    "epochTime": 1596339932
+  },-->

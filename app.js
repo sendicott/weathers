@@ -80,19 +80,10 @@ app.component("summary", {
 });
 
 app.controller("SummaryController", function ($scope, WeatherService) {
-    // trying to change epoch time to regular time, but it's 
-    // still returning epoch time
-
-    // $scope.summaryArray = WeatherService.getSummaryData();
-    let summaryArray = WeatherService.getSummaryData();
-    let geoLocale = [];
-    for (let i = 0; i < summaryArray.length; i++) {
-        summaryArray[i].epochTime = moment(summaryArray[i].epochTime).format('YYYY');
-        // console.log("testing");
+    $scope.summaryArray = WeatherService.getSummaryData();
+    $scope.seeDirections = function () {
+        $state.go("directions");
     }
-
-
-    $scope.summaryArray = summaryArray;
 });
 // ------------Summary Page------------
 
@@ -103,7 +94,8 @@ app.component("directions", {
 });
 
 app.controller("DirectionsController", function ($scope, WeatherService) {
-    $scope.directionsArray = WeatherService.getDirectionData();
+    $scope.directionsArray = WeatherService.getDirectionsData();
+    console.log(WeatherService.getDirectionsData());
 });
 // ------------Directions Page------------
 
@@ -114,75 +106,7 @@ app.factory("WeatherService", function ($http) {
         time: null,
     };
 
-    let summaryTesting = [
-        {
-            street: "95W",
-            time: "12:00PM",
-            weather: "Heavy Rain",
-            temp: 74,
-            icon: "wi-wu-rain",
-        },
-        {
-            street: "85N",
-            time: "4:00PM",
-            weather: "Clear Skies",
-            temp: 79,
-            icon: "wi-wu-clear",
-        },
-        {
-            street: "Interstate-77",
-            time: "9:00PM",
-            weather: "Blizzard",
-            temp: 12,
-            icon: "wi-wu-snow",
-        },
-        {
-            street: "Shore Road",
-            time: "4:00AM",
-            weather: "Thunderstorm",
-            temp: 64,
-            icon: "wi-wu-tstorms",
-        },
-    ];
-
-    let directionTesting = [
-        {
-            navicon: "arrow_downward",
-            description: "Head southeast on W 1st St towards S Church St",
-            distance: 400,
-            distanceUnit: "feet",
-            temp: 64,
-            weather: "Thunderstorms",
-            weathicon: "wi wi-wu-tstorms",
-        },
-        {
-            navicon: "arrow_forward",
-            description: "Turn right onto the Interstate 277 Outer N ramp",
-            distance: 0.2,
-            distanceUnit: "miles",
-            temp: 63,
-            weather: "Thunderstorms",
-            weathicon: "wi wi-wu-tstorms",
-        },
-        {
-            navicon: "arrow_upward",
-            description: "Keep straight at the fork to continue on US-74 E, follow signs for NC-27 E/Independence Expy",
-            distance: 76,
-            distanceUnit: "miles",
-            temp: 68,
-            weather: "Rain",
-            weathicon: "wi wi-wu-rain",
-        },
-        {
-            navicon: "arrow_back",
-            description: "Use the left 2 lands to turn left onto US-11 S/US Hwy 220 N (signs for US-220 N)",
-            distance: 0.1,
-            distanceUnit: "miles",
-            temp: 35,
-            weather: "Sleet",
-            weathicon: "wi wi-wu-sleat",
-        },
-    ]
+    let dataArray = [];
 
     return {
         setStart: function (firstInput) {
@@ -197,12 +121,7 @@ app.factory("WeatherService", function ($http) {
             input.time = dateandtime;
         },
 
-        getInput: function () {
-            return input;
-        },
-
         getSummaryData: function () {
-            let dataArray = [];
             let returnedArray = [];
 
             $http({
@@ -249,11 +168,39 @@ app.factory("WeatherService", function ($http) {
         },
 
         getDirectionsData: function () {
-            return summaryTesting;
-        },
+            let directionArray = dataArray;
+            for (let i = 0; i < directionArray.length; i++) {
+                $http({
+                    method: 'GET',
+                    url: "http://maps.googleapis.com/maps/api/geocode/json?latlng=" + directionArray[i].weathers[0].latitude + "," + directionArray[i].weathers[0].longitude + "&sensor=true"
+                }).then(function (response) {
+                    if (response.data.results !== undefined) {
+                        let result = response.data.results[0];
+                        for (let j = 0; j < result.address_components.length; j++) {
+                            if (result.address_components[j].types.indexOf("locality") !== -1) {
+                                directionArray[i].displayCity = result.address_components[j].long_name;
+                            }
+                            if (result.address_components[j].types.indexOf("administrative_area_level_1") !== -1) {
+                                directionArray[i].displayState = result.address_components[j].long_name;
+                            }
+                        }
+                    } else {
+                        directionArray[i].displayCity = "No address found";
+                    }
+                });
+            }
+            for (let k = 0; k < directionArray.length; k++) {
+                directionArray[k].displayTime = moment.unix(directionArray[k].epochTime).format('MMMM Do, h:mm a');
+                // if maneuver is null, then make it straight
+                if (directionArray[k].step.maneuver === null || directionArray[k].step.maneuver === "merge") {
+                    directionArray[k].step.maneuver = "straight";
+                }
+                // split the array on each space in the string and return the last index of the array
+                // let splitter = directionArray[k].step.maneuver;
+                // directionArray[k].step.maneuver = splitter.split(" ", -1);
+            }
 
-        getDirectionData: function () {
-            return directionTesting;
+            return directionArray;
         },
     };
 });
