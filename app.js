@@ -93,9 +93,16 @@ app.component("directions", {
     controller: "DirectionsController",
 });
 
-app.controller("DirectionsController", function ($scope, WeatherService) {
+app.controller("DirectionsController", function ($scope, WeatherService, $sce) {
     $scope.directionsArray = WeatherService.getDirectionsData();
-    console.log(WeatherService.getDirectionsData());
+    // console.log(WeatherService.getDirectionsData());
+    
+    $scope.$watch('directionsArray', function () {
+        for (let i = 0; i < $scope.directionsArray.length; i++) {
+            let html = $scope.directionsArray[i].step.html_instructions;
+            $scope.directionsArray[i].HTMLinstruction = $sce.trustAsHtml(html);
+        }
+    });
 });
 // ------------Directions Page------------
 
@@ -168,7 +175,7 @@ app.factory("WeatherService", function ($http) {
         },
 
         getDirectionsData: function () {
-            let directionArray = dataArray;
+            let directionArray = JSON.parse(JSON.stringify(dataArray));
             for (let i = 0; i < directionArray.length; i++) {
                 $http({
                     method: 'GET',
@@ -196,8 +203,16 @@ app.factory("WeatherService", function ($http) {
                     directionArray[k].step.maneuver = "straight";
                 }
                 // split the array on each space in the string and return the last index of the array
-                // let splitter = directionArray[k].step.maneuver;
-                // directionArray[k].step.maneuver = splitter.split(" ", -1);
+                let splitter = directionArray[k].step.maneuver;
+                splitter = splitter.split("-").slice(-1)[0];
+                if (splitter === "straight") {
+                    splitter = "arrow_upward";
+                } else if (splitter === "right") {
+                    splitter = "arrow_forward";
+                } else if (splitter === "left") {
+                    splitter = "arrow_back";
+                }
+                directionArray[k].step.maneuver = splitter;
             }
 
             return directionArray;

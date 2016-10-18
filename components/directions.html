@@ -2,14 +2,12 @@
     <h1>Directions</h1>
     <div class="directionBox" ng-repeat="direction in directionsArray">
         <div class="boxChunk">
+            <i class="material-icons">{{ direction.step.maneuver }}</i>
             <h2>{{ direction.displayTime }}</h2>
-            <!--<p>Length: {{ direction.step.duration.text }}</p>-->
-            <h2>Length: {{ direction.step.duration.text }}/{{ direction.step.distance.text }}</h2>
         </div>
         <div class="boxChunk">
-            <p>{{ direction.step.html_instructions }}</p>
-            <h2>Maneuver: {{ direction.step.maneuver }}</h2>
-            <i class="material-icons">{{ direction.step.maneuver }}</i>
+            <p ng-bind-html="direction.HTMLinstruction"></p>
+            <p>for {{ direction.step.duration.text }} or {{ direction.step.distance.text }}</p>
         </div>
         <div class="boxChunk">
             <p>{{ direction.weathers[0].currently.summary }}</p>
@@ -17,38 +15,3 @@
         </div>
     </div>
 </section>
-
-  <!--{
-    "step": {
-      "distance": {
-        "text": "482 ft",
-        "value": "147"
-      },
-      "duration": {
-        "text": "1 min",
-        "value": "42"
-      },
-      "start": {
-        "lat": 35.2271331,
-        "lng": -80.84317519999999
-      },
-      "end": {
-        "lat": 35.227995,
-        "lng": -80.84194500000001
-      },
-      "maneuver": null,
-      "html_instructions": "Head <b>northeast</b> on <b>S Tryon St</b> toward <b>W Trade St</b>"
-    },
-    "weathers": [
-      {
-        "latitude": "35.2271331",
-        "longitude": "-80.84317519999999",
-        "currently": {
-          "icon": "wi-night-alt-cloudy",
-          "summary": "Partly Cloudy",
-          "temperature": 74
-        }
-      }
-    ],
-    "epochTime": 1596339932
-  },-->
