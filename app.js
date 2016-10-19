@@ -29,8 +29,8 @@ app.component("inputter", {
 });
 
 app.controller("InputController", function ($scope, WeatherService, $state) {
-    $scope.start = 'Somers Point, NJ'; // just for testing
-    $scope.end = 'San Francisco, CA'; // just for testing
+    $scope.start = "";
+    $scope.end = "";
 
     $scope.months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
@@ -79,7 +79,7 @@ app.component("summary", {
     controller: "SummaryController",
 });
 
-app.controller("SummaryController", function ($scope, WeatherService) {
+app.controller("SummaryController", function ($scope, WeatherService, $state) {
     $scope.summaryArray = WeatherService.getSummaryData();
     $scope.seeDirections = function () {
         $state.go("directions");
@@ -189,7 +189,7 @@ app.factory("WeatherService", function ($http) {
         getDirectionsData: function () {
             let directionArray = JSON.parse(JSON.stringify(dataArray));
             for (let i = 0; i < directionArray.length; i++) {
-                
+
                 $http({
                     method: 'GET',
                     url: "http://maps.googleapis.com/maps/api/geocode/json?latlng=" + directionArray[i].weathers[0].latitude + "," + directionArray[i].weathers[0].longitude + "&sensor=true"
