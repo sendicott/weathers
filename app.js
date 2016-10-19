@@ -136,12 +136,23 @@ app.factory("WeatherService", function ($http) {
                 url: "https://whispering-cliffs-96344.herokuapp.com/?startLocation=" + input.start + "&endLocation=" + input.end + "&startTime=" + input.time
             }).then(function (response) {
                 angular.copy(response.data, dataArray);
-                returnedArray.push(dataArray[0]);
+                // returnedArray.push(dataArray[0]);
+
+                let latestWeather = null;
+                // looping through each step
                 for (let i = 1; i < dataArray.length; i++) {
-                    if (dataArray[i].weathers[0].currently.summary !== dataArray[i - 1].weathers[0].currently.summary) {
-                        returnedArray.push(dataArray[i]);
+                    // looping through each worthwhile chunk of said step
+                    for (let j = 0; j < dataArray[i].weathers[j].length; j++) {
+                        if (dataArray[i].weathers[j].currently.summary !== latestWeather.currently.summary) {
+                            // returnedArray.push(dataArray[i]);
+                            dataArray[i].weather = weathers[j];
+                            latestWeather = dataArray[i].weathers[j];
+                            returnedArray.push();
+                        }
                     }
                 };
+
+
                 for (let j = 0; j < returnedArray.length; j++) {
                     returnedArray[j].displayTime = moment.unix(returnedArray[j].epochTime).format('MMMM Do, h:mm a');
                 }
@@ -150,7 +161,7 @@ app.factory("WeatherService", function ($http) {
                 for (let j = 0; j < returnedArray.length; j++) {
                     $http({
                         method: 'GET',
-                        url: "http://maps.googleapis.com/maps/api/geocode/json?latlng=" + returnedArray[j].weathers[0].latitude + "," + returnedArray[j].weathers[0].longitude + "&sensor=true"
+                        url: "http://maps.googleapis.com/maps/api/geocode/json?latlng=" + returnedArray[j].weather.latitude + "," + returnedArray[j].weather.longitude + "&sensor=true"
                     }).then(function (response) {
                         if (response.data.results !== undefined) {
                             let result = response.data.results[0];

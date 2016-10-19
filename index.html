@@ -20,7 +20,7 @@
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
-    <title>GeoDriver</title>
+    <title>SleetStreet</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.0-beta.3/angular-ui-router.min.js"></script>
     <script src="app.js"></script>
@@ -32,6 +32,9 @@
 </head>
 
 <body ng-app="WeathersApp">
+    <header>
+      <h1>SleetStreet</h1><img src="favicon/favicon-96x96.png"></img>
+    </header>
     <main>
         <ui-view></ui-view>
         <div id="darksky">
@@ -48,39 +51,3 @@
 </body>
 
 </html>
-
-
-   <!--{
-  {
-    "step": {
-      "distance": {
-        "text": "482 ft",
-        "value": "147"
-      },
-      "duration": {
-        "text": "1 min",
-        "value": "42"
-      },
-      "start": {
-        "lat": 35.2271331,
-        "lng": -80.84317519999999
-      },
-      "end": {
-        "lat": 35.227995,
-        "lng": -80.84194500000001
-      }
-    },
-    "weathers": [
-      {
-        "latitude": "35.2271331",
-        "longitude": "-80.84317519999999",
-        "currently": {
-          "icon": "wi-night-alt-cloudy",
-          "summary": "Partly Cloudy",
-          "temperature": 74
-        }
-      }
-    ],
-    "epochTime": 1596339932
-  },
-  -->

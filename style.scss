@@ -19,6 +19,20 @@ $hover-color: yellow;
 body {
     @include grid-row(12);
 
+    header {
+        @include grid-column(12);
+        background-color: $regulartext-color;
+        min-height: 50px;
+        text-align: center;
+        
+        h1 {
+            color: $bkgndandbttn-color;
+            font-weight: 800;
+            font-size: 24px;
+
+        }            
+    }
+
     main {
         @include grid-column(12);
         background-color: $outerbkgnd-color;
