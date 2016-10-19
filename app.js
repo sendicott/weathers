@@ -29,7 +29,7 @@ app.component("inputter", {
 });
 
 app.controller("InputController", function ($scope, WeatherService, $state) {
-    $scope.start = 'Charlotte, NC'; // just for testing
+    $scope.start = 'Somers Point, NJ'; // just for testing
     $scope.end = 'San Francisco, CA'; // just for testing
 
     $scope.months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -113,6 +113,7 @@ app.factory("WeatherService", function ($http) {
         time: null,
     };
 
+    let returnedArray = [];
     let dataArray = [];
 
     return {
@@ -129,34 +130,34 @@ app.factory("WeatherService", function ($http) {
         },
 
         getSummaryData: function () {
-            let returnedArray = [];
+        
 
             $http({
                 method: 'GET',
                 url: "https://whispering-cliffs-96344.herokuapp.com/?startLocation=" + input.start + "&endLocation=" + input.end + "&startTime=" + input.time
             }).then(function (response) {
                 angular.copy(response.data, dataArray);
-                // returnedArray.push(dataArray[0]);
-
-                let latestWeather = null;
-                // looping through each step
-                for (let i = 1; i < dataArray.length; i++) {
+                returnedArray.push({
+                    weather: dataArray[0].weathers[0],
+                    epochTime: dataArray[0].epochTime,
+                });
+                for (let i = 0; i < dataArray.length; i++) {
                     // looping through each worthwhile chunk of said step
-                    for (let j = 0; j < dataArray[i].weathers[j].length; j++) {
-                        if (dataArray[i].weathers[j].currently.summary !== latestWeather.currently.summary) {
-                            // returnedArray.push(dataArray[i]);
-                            dataArray[i].weather = weathers[j];
-                            latestWeather = dataArray[i].weathers[j];
-                            returnedArray.push();
+                    for (let j = 0; j < dataArray[i].weathers.length; j++) {
+                        if (dataArray[i].weathers[j].currently.summary !== returnedArray[returnedArray.length-1].weather.currently.summary) {
+                            let newObject = {
+                                weather: dataArray[i].weathers[j],
+                                epochTime: dataArray[i].epochTime,
+                            }
+                            returnedArray.push(newObject);
                         }
                     }
                 };
 
-
                 for (let j = 0; j < returnedArray.length; j++) {
                     returnedArray[j].displayTime = moment.unix(returnedArray[j].epochTime).format('MMMM Do, h:mm a');
                 }
-
+                console.log(returnedArray);
                 // Get the location name for latlongs
                 for (let j = 0; j < returnedArray.length; j++) {
                     $http({
@@ -188,6 +189,7 @@ app.factory("WeatherService", function ($http) {
         getDirectionsData: function () {
             let directionArray = JSON.parse(JSON.stringify(dataArray));
             for (let i = 0; i < directionArray.length; i++) {
+                
                 $http({
                     method: 'GET',
                     url: "http://maps.googleapis.com/maps/api/geocode/json?latlng=" + directionArray[i].weathers[0].latitude + "," + directionArray[i].weathers[0].longitude + "&sensor=true"
