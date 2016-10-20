@@ -130,13 +130,14 @@ app.factory("WeatherService", function ($http) {
         },
 
         getSummaryData: function () {
-        
+            returnedArray.length = 0;
 
             $http({
                 method: 'GET',
                 url: "https://whispering-cliffs-96344.herokuapp.com/?startLocation=" + input.start + "&endLocation=" + input.end + "&startTime=" + input.time
             }).then(function (response) {
                 angular.copy(response.data, dataArray);
+                // returnedArray = [];
                 returnedArray.push({
                     weather: dataArray[0].weathers[0],
                     epochTime: dataArray[0].epochTime,
@@ -183,11 +184,13 @@ app.factory("WeatherService", function ($http) {
             }, function (response) {
                 console.log("Failed");
             });
+            
             return returnedArray;
         },
 
         getDirectionsData: function () {
-            let directionArray = JSON.parse(JSON.stringify(dataArray));
+            let directionArray = [];
+            directionArray = JSON.parse(JSON.stringify(dataArray));
             for (let i = 0; i < directionArray.length; i++) {
 
                 $http({
